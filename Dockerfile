@@ -15,6 +15,7 @@ RUN taskd config --force client.cert $TASKDDATA/pki/client.cert.pem && \
 	taskd config --force ca.cert $TASKDDATA/pki/ca.cert.pem && \
 	taskd config server 0.0.0.0:53589 && \
 	taskd config debug.tls 3 && \
+	taskd config log /dev/stdout && \
 	taskd add org Public
 
 # do it live
