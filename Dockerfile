@@ -1,7 +1,7 @@
 FROM debian:stretch
 MAINTAINER Jack Laxson <jackjrabbit@gmail.com>
 
-RUN apt-get update && apt-get install -y taskd gnutls-bin
+RUN apt-get update && apt-get install -y taskd gnutls-bin netcat && apt-get clean
 
 ENV TASKDDATA=/var/lib/taskd
 
