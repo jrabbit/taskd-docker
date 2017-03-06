@@ -17,4 +17,4 @@ WORKDIR /var/lib/taskd
 # to find the volume: `docker inspect --format='{{.Volumes}}'`
 ENTRYPOINT ["/bin/entrypoint.sh"]
 CMD ["server"]
-HEALTHCHECK CMD nc -z localhost 53589 || exit 1
+HEALTHCHECK --interval=5m CMD nc -z localhost 53589 || exit 1
