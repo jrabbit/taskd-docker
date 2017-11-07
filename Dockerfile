@@ -5,6 +5,9 @@ RUN apt-get update && apt-get install -y taskd gnutls-bin netcat && apt-get clea
 
 ENV TASKDDATA=/var/lib/taskd
 
+WORKDIR /var/lib/taskd
+
+RUN rm config
 
 COPY entrypoint.sh /bin/
 
@@ -12,7 +15,6 @@ COPY entrypoint.sh /bin/
 EXPOSE 53589
 
 VOLUME /var/lib/taskd
-WORKDIR /var/lib/taskd
 
 # to find the volume: `docker inspect --format='{{.Volumes}}'`
 ENTRYPOINT ["/bin/entrypoint.sh"]
