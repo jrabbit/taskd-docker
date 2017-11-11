@@ -11,6 +11,12 @@ RUN rm config
 
 COPY entrypoint.sh /bin/
 
+ENV TAGNAME=v0.0.3
+
+ADD https://github.com/jrabbit/taskd-client-go/releases/download/$TAGNAME/taskd-client /bin/
+
+RUN chmod +x /bin/taskd-client
+
 # do it live
 EXPOSE 53589
 
@@ -19,4 +25,4 @@ VOLUME /var/lib/taskd
 # to find the volume: `docker inspect --format='{{.Volumes}}'`
 ENTRYPOINT ["/bin/entrypoint.sh"]
 CMD ["server"]
-HEALTHCHECK --interval=5m CMD nc -z localhost 53589 || exit 1
+HEALTHCHECK --interval=5m CMD taskd-client --norc --cacert pki/ca.cert.pem --certificate pki/client.cert.pem  --key pki/client.key.pem --insecure healthcheck
