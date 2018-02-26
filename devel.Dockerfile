@@ -1,4 +1,4 @@
-FROM debian:stretch
+FROM debian:stretch AS build
 MAINTAINER Jack Laxson <jackjrabbit@gmail.com>
 
 COPY stretch-src.list /etc/apt/sources.list.d/
@@ -9,6 +9,11 @@ RUN git clone --recursive https://github.com/jrabbit/taskserver.git /srv/taskser
 	cd /srv/taskserver && git checkout debian-1.2 &&\
 	tar -cJ --wildcards --exclude '.git*'  . > ../taskd_1.2.0.orig.tar.xz &&\ 
 	dpkg-buildpackage -us -uc
+
+FROM debian:stretch
+COPY --from=build /srv/taskd_1.2.0-1_amd64.deb /srv/taskd_prebaked.deb
+RUN apt update && apt install -y libgnutls30 gnutls-bin && apt clean
+RUN dpkg -i /srv/taskd_prebaked.deb
 
 ENV TASKDDATA=/var/lib/taskd
 WORKDIR /var/lib/taskd
